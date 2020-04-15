@@ -230,10 +230,6 @@ loginBtn = Button(frame, text="Entrar", width="20", command=loginVerificar)
 loginBtn.place(x="300", y="335")
 
 
-
-
-
-
 janela.mainloop()
 
 
