@@ -13,3 +13,4 @@ CREATE TABLE IF NOT EXISTS Users (
 """)
 
 print("Conectado ao Banco de Dados >>> Users")
+
