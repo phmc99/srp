@@ -13,7 +13,7 @@ janela.resizable(width=False, height=False)
 janela.attributes("-alpha", 0.9)
 janela.iconbitmap(default="./images/logon.ico")
 
-#===========Importando imagens===========#
+#===========IMAGENS===========#
 logo = PhotoImage(file="./images/logo.png")
 bg = PhotoImage(file="./images/bg.png")
 
@@ -24,7 +24,7 @@ frame.pack(side="top")
 bgLabel = Label(frame, image=bg, bg="gray") 
 bgLabel.place(x="0", y="0")
 
-#==============WIDGETS=================#
+#==============WIDGETS DA PAGINA=================#
 userEntry = ttk.Entry(frame, width="30")
 userEntry.insert(0, "Usuário")
 userEntry.configure(state=DISABLED)
@@ -82,9 +82,6 @@ def registrarUser():
             usersBd.conn.commit()
             messagebox.showinfo(title="SRP - Info", message="Usuário registrado com sucesso!")
     
-    reg_to_bd_Btn = Button(frame, text="Registrar", width="20", command=registrarBd)
-    reg_to_bd_Btn.place(x="300", y="335")
-
     def voltar():
         emailEntry.place(x="5000")
         reg_to_bd_Btn.place(x="5000")
@@ -93,6 +90,10 @@ def registrarUser():
         voltarBtn.place(x="5000")
         userEntry.delete(0, END)
         passEntry.delete(0, END)
+
+#===========BOTOES DA PAGINA DE REGISTRO DO USER===========#
+    reg_to_bd_Btn = Button(frame, text="Registrar", width="20", command=registrarBd)
+    reg_to_bd_Btn.place(x="300", y="335")
 
     voltarBtn = Button(frame, text="Voltar", width="20", command=voltar)
     voltarBtn.place(x="300", y="365")
@@ -119,8 +120,109 @@ def loginVerificar():
     userEntry.place(x="5000")
     passEntry.place(x="5000")
 
+#============WIDGETS DE REGISTRO DOS PETS=================#
+    nomePetEntry = ttk.Entry(frame, width="30")
+    nomePetEntry.insert(0,"Nome do Pet.")
+    nomePetEntry.configure(state=DISABLED)
+    nomePetEntry.place(x="285", y="240")
 
-#===========BOTOES===============#
+    tipoPetEntry = ttk.Entry(frame, width="30")
+    tipoPetEntry.insert(0,"Tipo do pet. (Canino, felino, ...)")
+    tipoPetEntry.configure(state=DISABLED)
+    tipoPetEntry.place(x="285", y="265")
+
+    racaPetEntry = ttk.Entry(frame, width="30")
+    racaPetEntry.insert(0,"Raça do Pet ou nome popular.")
+    racaPetEntry.configure(state=DISABLED)
+    racaPetEntry.place(x="285", y="290")
+
+    sexoPetEntry = ttk.Entry(frame, width="30")
+    sexoPetEntry.insert(0,"Sexo do pet.")
+    sexoPetEntry.configure(state=DISABLED)
+    sexoPetEntry.place(x="285", y="315")
+
+    donoPetEntry = ttk.Entry(frame, width="30")
+    donoPetEntry.insert(0,"Nome do dono.")
+    donoPetEntry.configure(state=DISABLED)
+    donoPetEntry.place(x="285", y="340")
+
+    teldonoPetEntry = ttk.Entry(frame, width="30")
+    teldonoPetEntry.insert(0,"Telefone de contato do dono. (Apenas números)")
+    teldonoPetEntry.configure(state=DISABLED)
+    teldonoPetEntry.place(x="285", y="365")
+
+    def nomepetclick(event):
+        nomePetEntry.configure(state=NORMAL)
+        nomePetEntry.delete(0, END)
+        nomePetEntry.unbind('<Button-1>', nomepet_click_id)
+
+    def tipopetclick(event):
+        tipoPetEntry.configure(state=NORMAL)
+        tipoPetEntry.delete(0, END)
+        tipoPetEntry.unbind('<Button-1>', tipopet_click_id)
+
+    def racapetclick(event):
+        racaPetEntry.configure(state=NORMAL)
+        racaPetEntry.delete(0, END)
+        racaPetEntry.unbind('<Button-1>', racapet_click_id)
+
+    def sexopetclick(event):
+        sexoPetEntry.configure(state=NORMAL)
+        sexoPetEntry.delete(0, END)
+        sexoPetEntry.unbind('<Button-1>', sexopet_click_id)
+
+    def donopetclick(event):
+        donoPetEntry.configure(state=NORMAL)
+        donoPetEntry.delete(0, END)
+        donoPetEntry.unbind('<Button-1>', donopet_click_id)
+
+    def teldonoclick(event):
+        teldonoPetEntry.configure(state=NORMAL)
+        teldonoPetEntry.delete(0, END)
+        teldonoPetEntry.unbind('<Button-1>', teldono_click_id)
+        
+    nomepet_click_id = nomePetEntry.bind('<Button-1>', nomepetclick)
+    tipopet_click_id = tipoPetEntry.bind('<Button-1>', tipopetclick)
+    racapet_click_id = racaPetEntry.bind('<Button-1>', racapetclick)
+    sexopet_click_id = sexoPetEntry.bind('<Button-1>', sexopetclick)
+    donopet_click_id = donoPetEntry.bind('<Button-1>', donopetclick)
+    teldono_click_id = teldonoPetEntry.bind('<Button-1>', teldonoclick)
+
+#==================REGISTRAR O PET=====================#
+    def registrarPet():
+        nome = nomePetEntry.get()
+        tipo = tipoPetEntry.get()
+        raca = racaPetEntry.get()
+        sexo = sexoPetEntry.get()
+        dono = donoPetEntry.get()
+        tel = teldonoPetEntry.get()
+        
+        if (nome == "" or tipo == "" or raca == "" or sexo == "" or dono == "" or tel == ""):
+            messagebox.showerror(title="SRP - Errror", message="Preencha todos os campos.")
+        else:
+            petsBd.cursor.execute("""
+            INSERT INTO Pets (Nome, Tipo, Raca, Sexo, Dono, TelDono) VALUES (?, ?, ?, ?, ?, ?)
+            """, (nome, tipo, raca, sexo, dono, tel))
+            petsBd.conn.commit()
+            messagebox.showinfo(title="SRP - Info", message="Pet cadastrado com sucesso.")
+
+    regPetBtn = Button(frame, text="Registrar Pet", width="20", command=registrarPet)
+    regPetBtn.place(x="300", y="400")
+
+    def limparPet():
+        nomePetEntry.delete(0, END)
+        tipoPetEntry.delete(0, END)
+        racaPetEntry.delete(0, END)
+        sexoPetEntry.delete(0, END)
+        donoPetEntry.delete(0, END)
+        teldonoPetEntry.delete(0, END)
+
+    limparPetBtn = Button(frame, text="Limpar", width="20", command=limparPet)
+    limparPetBtn.place(x="300", y="430")
+    
+    
+
+#===========BOTOES INICIO===============#
 regBtn = Button(frame, text="Registrar Usuário", width="20", command=registrarUser)
 regBtn.place(x="300", y="365")
 
@@ -130,21 +232,8 @@ loginBtn.place(x="300", y="335")
 
 
 
-"""def registrarPet():
-    nomeR = nome.get()
-    tipoR = tipo.get()
-    racaR = raca.get()
-    sexoR = sexo.get()
-    nomeDR = nomeDono.get()
-    telDR = telDono.get()
-    
-    if nomeR == "" or tipoR == "" or racaR == "" or sexoR == "" or nomeDR == "" or telDR == "":
-        print("Preencha todos os campos!!!")
-    else:
-        petsBd.cursor.execute("""
-        #INSERT INTO Pets (nomeR, tipoR, racaR, sexoR, nomeDR, telDR) VALUE (?, ?, ?, ?, ?, ?)
-        """, (nomeR, tipoR, racaR, sexoR, nomeDR, telDR))
-        petsBd.conn.commit()
-    print("CADASTRO CONCLUIDO COM SUCESSO!")"""
+
 
 janela.mainloop()
+
+
