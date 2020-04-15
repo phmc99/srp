@@ -10,9 +10,10 @@ CREATE TABLE IF NOT EXISTS Pets (
     Tipo TEXT NOT NULL,
     Raca TEXT NOT NULL,
     Sexo TEXT NOT NULL,
-    NomeDono TEXT NOT NULL,
+    Dono TEXT NOT NULL,
     TelDono INTEGER NOT NULL
 );
 """)
 
 print("Conectado ao Banco de Dados >>> Pets")
+
